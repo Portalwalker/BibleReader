@@ -1,6 +1,6 @@
 # Bible Reader
 
-A simple Bible Web app for a focused reading experience.:coffee:
+A simple Bible Web app for a focused reading experience. :coffee:
 
 ## What it does
 
