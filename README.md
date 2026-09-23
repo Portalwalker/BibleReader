@@ -18,3 +18,9 @@ cd BibleReader
 ### Note
 - You may need to authenticate to sudo in order to start the postgresl service.
 - Supported Platforms: Linux
+
+### Requirements
+- postgresql
+- npm
+- git
+- bash terminal
