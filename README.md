@@ -13,3 +13,8 @@ A simple Bible Web app for a focused reading experience. :coffee:
 git clone https://github.com/Portalwalker/BibleReader.git
 cd BibleReader
 ./startapp
+```
+
+### Note
+- You may need to authenticate to sudo in order to start the postgresl service.
+- Supported Platforms: Linux
