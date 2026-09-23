@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cur_scr="$(realpath "$BASH_SOURCE")"
+cur_dir="${cur_scr%/*}"
+
+sudo systemctl start postgresql </dev/tty
+
+${cur_dir}/scripts/setup
+${cur_dir}/scripts/query
+${cur_dir}/scripts/finish
+
+sudo systemctl stop postgresql </dev/tty
+
+exit

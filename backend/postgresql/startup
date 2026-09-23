@@ -1,0 +1,47 @@
+#!/bin/bash
+
+
+
+# set globals
+
+cur_scr="$(realpath "$BASH_SOURCE")"
+cur_dir="${cur_scr%/*}"
+
+if systemctl is-active --quiet "postgresql"
+then
+    shut_it_down_after_done=0
+else
+    shut_it_down_after_done=1
+    sudo systemctl start postgresql </dev/tty
+fi
+
+
+
+# starts psql server
+# initializes server data
+# waits for server shutdown trigger
+# cleans & shuts down the psql server
+
+${cur_dir}/scripts/setup
+
+while [ ! -f "${cur_dir}/done" ]
+do
+    sleep 3
+done
+
+rm -f "${cur_dir}/done"
+
+${cur_dir}/scripts/finish
+
+
+
+# shut down system postgresql service
+# [only] if it was not on before
+# for security reasons
+
+if [ $shut_it_down_after_done -eq 1 ]
+then
+    sudo systemctl stop postgresql </dev/tty
+fi
+
+exit

@@ -1,0 +1,51 @@
+#!/bin/bash
+
+cur_scr="$(realpath "$BASH_SOURCE")"
+cur_dir="${cur_scr%/*}"
+source "${cur_dir}/globals"
+
+
+echo -e "$yellow"
+echo -e "Example Command: "
+echo -e "$clear"
+echo -e "        sudo -iu postgres psql -U ${psql_user} -d ${psql_db} -c ${purple} \"select ${csv_col2},${csv_col4},${csv_col5},${csv_col6} from ${psql_tbl} where ${csv_col6} ilike '%loved the world%' or ${csv_col6} ilike '%and shalt believe%';\" ${clear} -P format=wrapped -P expanded=auto -P pager=off"
+echo -e "$cyan"
+
+sudo -iu postgres psql -U ${psql_user} -d ${psql_db} -c "select ${csv_col2},${csv_col4},${csv_col5},${csv_col6} from ${psql_tbl} where ${csv_col6} ilike '%loved the world%' or ${csv_col6} ilike '%and shalt believe%';" -P format=wrapped -P expanded=auto -P pager=off | awk '{print "        "$0}'
+
+echo -e ""
+echo -e "${green}[*] I'll handle the flags, you can just type in a psql query."
+echo -e "$clear"
+echo -e "    example format => select ${csv_col2},${csv_col4},${csv_col5},${csv_col6} from ${psql_tbl} where ${csv_col6} ilike '%loved the world%';"
+echo -e "$purple"
+echo -ne "[?] Want to try a query? [y/n]: ${clear}"
+read answer
+echo -ne "${clear}"
+
+if [ "${answer^^}" = "Y" ]
+then
+    echo -e "${yellow}    Type 'done' when finished.${clear}"
+    echo ""
+
+    query=""
+
+    while [ ! "${query^^}" = "DONE" ]
+    do
+        echo -en "${purple} query => "
+        echo -en "${clear}"
+        read query
+
+        if [ ! "${query^^}" = "DONE" ]
+        then
+            echo ""
+            echo -e "[+] database ${blue}${psql_db}${clear} <= ${purple}${query}${clear}"
+            echo -e "$cyan"
+            sudo -iu postgres psql -U ${psql_user} -d ${psql_db} -c "${query};" -P format=wrapped -P expanded=auto -P pager=off
+        fi
+    done
+fi
+
+echo ""
+echo -e "${yellow}[+] Exiting...${clear}"
+
+exit

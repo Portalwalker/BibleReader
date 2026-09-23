@@ -1,0 +1,38 @@
+#!/bin/bash
+
+cur_scr="$(realpath "$BASH_SOURCE")"
+cur_dir="${cur_scr%/*}"
+
+csv_dir="${cur_dir}/csv"
+csv_bible="${csv_dir}/asv.csv"
+csv_tmp="/tmp/${csv_bible##*/}"
+
+csv_col1="id"
+csv_col2="book"
+csv_col3="bookid"
+csv_col4="chapter"
+csv_col5="verse"
+csv_col6="text"
+
+csv_col1_type="INTEGER"
+csv_col2_type="TEXT"
+csv_col3_type="INTEGER"
+csv_col4_type="INTEGER"
+csv_col5_type="INTEGER"
+csv_col6_type="TEXT"
+
+csv_primary_key="${csv_col2}, ${csv_col4}, ${csv_col5}"
+
+psql_csv="$csv_bible"
+psql_db="Bible"
+psql_tbl="Scripture"
+psql_user="CuriousOne"
+psql_serv="localhost"
+
+ clear="\e[0m"
+   red="\e[31m"
+ green="\e[32m"
+  blue="\e[34m"
+purple="\e[35m"
+  cyan="\e[36m"
+yellow="\e[0;33m"

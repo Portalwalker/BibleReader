@@ -1,0 +1,81 @@
+#!/bin/bash
+
+if [ ! "$1" = "the_real_one" ]
+then
+    bash -c "$0 \"the_real_one\"" 2>/dev/null
+    exit
+fi
+
+# set globals
+
+cur_scr="$(realpath "$BASH_SOURCE")"
+cur_dir="${cur_scr%/*}"
+
+      back="${cur_dir}/backend"
+postgresql="${back}/postgresql"
+     front="${cur_dir}/frontend"
+
+
+# functions as a signal handler AND regular clean up routing
+cleanup()
+{
+    for pid in $(ps -ef | grep 'node' | grep -v 'grep' | awk '{print $2}')
+    do
+        kill -9 "$pid"
+    done
+}
+
+
+# start sql database
+
+"${postgresql}/startup" &
+sleep 3
+
+
+
+# start back end server
+echo -e ""
+echo -e "\e[34m    [+] Starting server..."
+cd ${back}; npm run dev >/dev/null 2>&1 &
+echo -e ""
+sleep 1
+
+
+# start front end BibleReader
+echo -e "\e[32m    [+] Starting BibleReader WebApp...\e[0m"
+cd ${front}; bash -c "npm start >/dev/null 2>&1 &" &
+sleep 1
+
+if [ -f "/usr/bin/firefox" ]
+then
+    echo -e ""
+    echo -e "\e[34m    [+] Visit http://localhost:3000 to checkout the BibleApp :)\e[0m"
+    echo -e ""
+
+    firefox http://localhost:3000 -width 400 -height 1000 &
+else
+    echo -e ""
+    echo -e "\e[34m    [+] Visit http://localhost:3000 to checkout the BibleApp :)\e[0m"
+    echo -e ""
+fi
+
+
+
+# capture and handle sigint to shutdown nicely
+
+echo -en "\e[36m    [+] Hit [ENTER] to quit...  \e[0m"
+read enter
+echo -e ""
+
+cd "$cur_dir"
+
+cleanup
+
+# database script will trigger shutdown of sql server
+touch "${postgresql}/done"
+
+sleep 4
+
+exit
+
+# enjoy the app!

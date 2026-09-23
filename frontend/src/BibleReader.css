@@ -1,0 +1,354 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+    --ink: #2b211b;
+    --muted-ink: #77685d;
+    --gold: #c69a45;
+    --gold-light: #f2d98b;
+    --wine: #6d2932;
+    --wine-dark: #451b24;
+    --cream: #fffaf0;
+    --paper: #fffdf7;
+    --border: rgba(124, 88, 40, 0.2);
+    --shadow: 0 24px 70px rgba(54, 30, 12, 0.18);
+}
+
+/* Page background */
+body {
+    min-height: 100vh;
+    margin: 0;
+    background:
+        radial-gradient(circle at 15% 15%, rgba(255, 220, 139, 0.28), transparent 28rem),
+        radial-gradient(circle at 90% 10%, rgba(109, 41, 50, 0.2), transparent 25rem),
+        linear-gradient(135deg, #f3ead8 0%, #e8d7bc 100%);
+    color: var(--ink);
+}
+
+/* Decorative page texture */
+body::before {
+    position: fixed;
+    z-index: -1;
+    inset: 0;
+    pointer-events: none;
+    content: "";
+    opacity: 0.35;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    background-size: 34px 34px;
+    mask-image: linear-gradient(to bottom, black, transparent 85%);
+}
+
+/* Main reader shell */
+.bible-reader {
+    position: relative;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 4rem 1.25rem 5rem;
+    color: var(--ink);
+    font-family: "Cormorant Garamond", Georgia, serif;
+}
+
+/* Gold ornament above the title */
+.bible-reader::before {
+    display: block;
+    width: 90px;
+    height: 4px;
+    margin: 0 auto 1.5rem;
+    border-radius: 999px;
+    content: "";
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--gold),
+        var(--wine),
+        var(--gold),
+        transparent
+    );
+    box-shadow: 0 0 20px rgba(198, 154, 69, 0.55);
+}
+
+/* Header */
+.bible-reader h1 {
+    position: relative;
+    margin: 0 auto 2.75rem;
+    text-align: center;
+    color: var(--wine-dark);
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 0.9;
+    text-shadow: 0 2px 0 #fff8e9, 0 8px 22px rgba(69, 27, 36, 0.15);
+}
+
+.bible-reader h1::after {
+    display: block;
+    margin: 1.25rem auto 0;
+    color: var(--gold);
+    content: "✦";
+    font-family: Georgia, serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.5rem;
+}
+
+/* Selection controls */
+.selectors {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 22px;
+    background: rgba(255, 250, 240, 0.57);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.85),
+        0 12px 30px rgba(65, 35, 15, 0.08);
+    backdrop-filter: blur(18px);
+    font-family: "Inter", Arial, sans-serif;
+}
+
+.selectors label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    color: var(--wine-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.selectors select {
+    width: 100%;
+    padding: 0.9rem 2.6rem 0.9rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    outline: none;
+    appearance: none;
+    color: var(--ink);
+    background:
+        linear-gradient(45deg, transparent 50%, var(--gold) 50%) calc(100% - 19px)
+            50% / 6px 6px no-repeat,
+        linear-gradient(135deg, var(--gold) 50%, transparent 50%) calc(100% - 14px)
+            50% / 6px 6px no-repeat,
+        rgba(255, 255, 255, 0.72);
+    box-shadow:
+        inset 0 1px 2px rgba(80, 45, 15, 0.06),
+        0 3px 10px rgba(80, 45, 15, 0.05);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.9rem;
+    letter-spacing: 0;
+    text-transform: none;
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+}
+
+.selectors select:hover {
+    border-color: rgba(109, 41, 50, 0.5);
+    transform: translateY(-1px);
+}
+
+.selectors select:focus-visible {
+    border-color: var(--gold);
+    box-shadow:
+        0 0 0 4px rgba(198, 154, 69, 0.2),
+        0 8px 18px rgba(80, 45, 15, 0.1);
+}
+
+.selectors select:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    background-color: rgba(220, 208, 190, 0.65);
+}
+
+/* Scripture card */
+.chapter {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.5rem, 5vw, 4rem);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 28px;
+    background:
+        linear-gradient(rgba(255, 253, 247, 0.91), rgba(255, 253, 247, 0.96)),
+        repeating-linear-gradient(
+            0deg,
+            rgba(120, 86, 39, 0.04) 0,
+            rgba(120, 86, 39, 0.04) 1px,
+            transparent 1px,
+            transparent 5px
+        );
+    box-shadow:
+        var(--shadow),
+        inset 0 0 0 10px rgba(198, 154, 69, 0.045),
+        inset 0 0 0 11px rgba(198, 154, 69, 0.13);
+}
+
+/* Inner decorative corners */
+.chapter::before,
+.chapter::after {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border-color: var(--gold);
+    border-style: solid;
+    content: "";
+    opacity: 0.65;
+}
+
+.chapter::before {
+    top: 18px;
+    left: 18px;
+    border-width: 2px 0 0 2px;
+    border-radius: 14px 0 0;
+}
+
+.chapter::after {
+    right: 18px;
+    bottom: 18px;
+    border-width: 0 2px 2px 0;
+    border-radius: 0 0 14px;
+}
+
+.chapter h2 {
+    position: relative;
+    margin: 0 0 2rem;
+    text-align: center;
+    color: var(--wine);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1;
+}
+
+.chapter h2::after {
+    display: block;
+    width: 120px;
+    height: 1px;
+    margin: 1rem auto 0;
+    content: "";
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* Scripture text */
+.chapter-text {
+    position: relative;
+    color: #3b2c21;
+    font-size: clamp(1.18rem, 2.3vw, 1.48rem);
+    line-height: 1.85;
+    text-align: left;
+}
+
+/* Verses */
+.verse {
+    margin: 0.55rem -0.75rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 10px;
+    scroll-margin-top: 2rem;
+    transition:
+        background 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+}
+
+.verse:hover {
+    background: rgba(242, 217, 139, 0.16);
+    transform: translateX(3px);
+}
+
+.verse sup {
+    display: inline-block;
+    min-width: 1.4rem;
+    margin-right: 0.35rem;
+    color: var(--wine);
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.62em;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    vertical-align: 0.25em;
+}
+
+.verse.selected {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(242, 217, 139, 0.8),
+            rgba(255, 240, 168, 0.52)
+        );
+    box-shadow:
+        0 0 0 1px rgba(198, 154, 69, 0.8),
+        0 8px 20px rgba(130, 89, 20, 0.1);
+    transform: translateX(4px);
+}
+
+/* Error message */
+.error {
+    margin: 1rem 0;
+    padding: 0.9rem 1rem;
+    border-left: 4px solid #b00020;
+    border-radius: 8px;
+    color: #8e001b;
+    background: rgba(176, 0, 32, 0.08);
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.9rem;
+}
+
+/* Mobile layout */
+@media (max-width: 650px) {
+    .bible-reader {
+        padding: 2.5rem 0.85rem 3rem;
+    }
+
+    .selectors {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        padding: 1rem;
+        border-radius: 18px;
+    }
+
+    .chapter {
+        padding: 2rem 1.15rem;
+        border-radius: 20px;
+    }
+
+    .chapter::before,
+    .chapter::after {
+        width: 42px;
+        height: 42px;
+    }
+
+    .chapter::before {
+        top: 12px;
+        left: 12px;
+    }
+
+    .chapter::after {
+        right: 12px;
+        bottom: 12px;
+    }
+
+    .chapter-text {
+        font-size: 1.18rem;
+        line-height: 1.75;
+    }
+
+    .verse {
+        margin-right: -0.3rem;
+        margin-left: -0.3rem;
+        padding-right: 0.45rem;
+        padding-left: 0.45rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}

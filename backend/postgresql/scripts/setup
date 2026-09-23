@@ -1,0 +1,35 @@
+#!/bin/bash
+
+cur_scr="$(realpath "$BASH_SOURCE")"
+cur_dir="${cur_scr%/*}"
+source "${cur_dir}/globals"
+
+
+echo -e "${cyan}[+] Creating user named ${psql_user}...${clear}"
+sudo -iu postgres createuser --superuser "$psql_user"</dev/tty
+
+echo -e "${green}[+] Creating ${psql_db} database...${clear}"
+sudo -iu postgres createdb -O "$psql_user" "$psql_db"</dev/tty
+
+echo -e "${blue}[+] Forming a table for ${psql_tbl}...${clear}"
+sudo -iu postgres psql -h "$psql_serv" -d ${psql_db} -c "
+CREATE TABLE IF NOT EXISTS ${psql_tbl} (
+    ${csv_col1} ${csv_col1_type} NOT NULL,
+    ${csv_col2} ${csv_col2_type} NOT NULL,
+    ${csv_col3} ${csv_col3_type} NOT NULL,
+    ${csv_col4} ${csv_col4_type} NOT NULL,
+    ${csv_col5} ${csv_col5_type} NOT NULL,
+    ${csv_col6} ${csv_col6_type} NOT NULL,
+PRIMARY KEY (${csv_primary_key})
+);
+" >/dev/null </dev/tty
+
+echo -e "${cyan}[+] Reading ${psql_tbl}...${clear}"
+cp "$psql_csv" "$csv_tmp"
+sudo -iu postgres psql -U "$psql_user" -d "$psql_db" -c "\copy ${psql_tbl} FROM '${csv_tmp}' WITH (FORMAT CSV, HEADER, QUOTE '\"', DELIMITER ',')" >/dev/null </dev/tty
+rm -f "$csv_tmp"
+
+echo -e "${cyan}[+] ${green}Done.${clear}"
+
+exit
+

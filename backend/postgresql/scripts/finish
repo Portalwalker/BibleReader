@@ -1,0 +1,21 @@
+#!/bin/bash
+
+cur_scr="$(realpath "$BASH_SOURCE")"
+cur_dir="${cur_scr%/*}"
+source "${cur_dir}/globals"
+
+
+echo -e "${green}[+] Deleting table...${clear}"
+sudo -iu postgres  psql -U "$psql_user" -d "$psql_db" -c "DROP TABLE IF EXISTS ${psql_tbl};" >/dev/null </dev/tty
+
+echo -e "${blue}[+] Deleting database...${clear}"
+sudo -iu postgres dropdb -U "$psql_user" "$psql_db"</dev/tty
+
+echo -e "${cyan}[+] Deleting user...all clean!${clear}"
+sudo -iu postgres dropuser "$psql_user"</dev/tty
+
+echo -e "${cyan}[+] ${green}Done.${clear}"
+
+
+exit
+
