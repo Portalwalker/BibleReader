@@ -3,7 +3,7 @@
 > *“Your word is a lamp to my feet and a light to my path.”*  
 > — **Psalm 119:105**
 
-A simple Bible reading web app for exploring Scripture with a calm and focused reading experience.
+A simple Bible Web app for a focused reading experience.
 
 ## ✧ Features
 
