@@ -15,4 +15,6 @@ A simple Bible Web app for a focused reading experience.
 ## ⚒ Getting Started
 
 ```bash
+git clone https://github.com/Portalwalker/BibleReader.git
+cd BibleReader
 ./startapp
