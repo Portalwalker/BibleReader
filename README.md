@@ -1,18 +1,13 @@
-# ✦ Bible Reader ✦
+# Bible Reader
 
-> *“Your word is a lamp to my feet and a light to my path.”*  
-> — **Psalm 119:105**
+A simple Bible Web app for a focused reading experience.:coffee:
 
-A simple Bible Web app for a focused reading experience.
+## What it does
 
-## ✧ Features
+- Ancient Scripture Exploration Facilitation
+- Designed as an example project :coffee:
 
-- Browse Bible passages
-- Read chapters in a clean interface
-- Simple, lightweight setup
-- Designed as an example project
-
-## ⚒ Getting Started
+## How to run
 
 ```bash
 git clone https://github.com/Portalwalker/BibleReader.git
