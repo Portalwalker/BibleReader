@@ -5,7 +5,7 @@ A simple Bible Web app for a focused reading experience. :coffee:
 ## What it does
 
 - Ancient Scripture Exploration Facilitation
-- Designed as an example project with the help of Duck.AI:coffee:
+- Designed as an example project with the help of Duck.AI :coffee:
 
 ## How to run
 
